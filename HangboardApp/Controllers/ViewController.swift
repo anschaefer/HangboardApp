@@ -21,18 +21,18 @@ class ViewController: UIViewController {
     //MARK: Properties
     private var timer = Timer()
     private var countdownTimer = Timer()
-    private var countdown = 5
+    private var countdown = 3
     
-    private var basicWorkout = Workout()
+    private var training = Workout()
    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        basicWorkout.title = "7 Seconds Hang"
-        basicWorkout.totalTime = 60
-        basicWorkout.restTime = 3
-        basicWorkout.workoutTime = 7
+        training.title = "7 Seconds Hang"
+        training.totalTime = 60
+        training.restTime = 3
+        training.workoutTime = 7
         
         initWorkoutScreen()
     }
@@ -58,7 +58,7 @@ class ViewController: UIViewController {
     //MARK: Methods
     
     private func initWorkoutScreen() {
-        workoutTitle.text = basicWorkout.title
+        workoutTitle.text = training.title
         workoutTimeLabel.isHidden = false
         startButton.isHidden = false
         resetButton.isHidden = true
@@ -100,20 +100,20 @@ class ViewController: UIViewController {
     }
     
     @objc func updateTimer() {
-        if basicWorkout.totalTime > 0 {
-            basicWorkout.totalTime -= 1
+        if training.totalTime > 0 {
+            training.totalTime -= 1
             
-            if basicWorkout.workoutTime == 0 {
-                basicWorkout.restTime -= 1
+            if training.workoutTime == 0 {
+                training.restTime -= 1
                 
-                if basicWorkout.restTime == 0 {
-                    basicWorkout.workoutTime = 7
-                    basicWorkout.restTime = 3
+                if training.restTime == 0 {
+                    training.workoutTime = 7
+                    training.restTime = 3
                 } else {
                     updateTimerLabels()
                 }
             } else {
-                basicWorkout.workoutTime -= 1
+                training.workoutTime -= 1
                 updateTimerLabels()
             }
         } else {
@@ -136,23 +136,23 @@ class ViewController: UIViewController {
     private func resetWorkout() {
         timer.invalidate()
         
-        basicWorkout.totalTime = 60
-        basicWorkout.workoutTime = 7
-        basicWorkout.restTime = 3
+        training.totalTime = 60
+        training.workoutTime = 7
+        training.restTime = 3
         countdown = 3
         
         initWorkoutScreen()
     }
     
     func updateTimerLabels() {
-        workoutTimeLabel.text = "\(timeString(time: TimeInterval(basicWorkout.totalTime)))"
+        workoutTimeLabel.text = "\(timeString(time: TimeInterval(training.totalTime)))"
         
-        if basicWorkout.workoutTime == 0 {
+        if training.workoutTime == 0 {
             countDownLabel.textColor = #colorLiteral(red: 0.6392156863, green: 0.8705882353, blue: 0.5137254902, alpha: 1)
-            countDownLabel.text = "\(basicWorkout.restTime)"
+            countDownLabel.text = "\(training.restTime)"
         } else {
             countDownLabel.textColor = #colorLiteral(red: 0.9803921569, green: 0.2745098039, blue: 0.3490196078, alpha: 1)
-            countDownLabel.text = "\(basicWorkout.workoutTime)"
+            countDownLabel.text = "\(training.workoutTime)"
         }
     }
     
