@@ -23,7 +23,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="7seconds Hang" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eSY-E2-raD">
-                                        <rect key="frame" x="106" y="28" width="162" height="29"/>
+                                        <rect key="frame" x="8" y="28" width="359" height="29"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -86,6 +86,7 @@
                         <outlet property="resetButton" destination="2qi-ee-PPO" id="86B-HR-BCB"/>
                         <outlet property="startButton" destination="goQ-su-bbq" id="1t3-7I-xJz"/>
                         <outlet property="workoutTimeLabel" destination="sbf-ZT-bbD" id="Noc-m5-YMK"/>
+                        <outlet property="workoutTitle" destination="eSY-E2-raD" id="qRG-lH-Flx"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
