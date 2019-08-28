@@ -10,38 +10,42 @@ import UIKit
 
 class ViewController: UIViewController {
 
-    //MARK: IBOutlets
-    @IBOutlet weak var workoutTitle: UILabel!
+    //MARK: - IBOutlets
+    @IBOutlet weak var workoutTitleLabel: UILabel!
     @IBOutlet weak var workoutTimeLabel: UILabel!
     @IBOutlet weak var countDownLabel: UILabel!
     @IBOutlet weak var startButton: UIButton!
     @IBOutlet weak var resetButton: UIButton!
-    @IBOutlet weak var buttonLabel: UILabel!
     
-    //MARK: Properties
-    private var timer = Timer()
-    private var countdownTimer = Timer()
-    private var countdown = 3
     
-    private var training = Workout()
-   
+    //MARK: - Properties
+    var workoutTime: Int = 0
+    var totalTime: Int = 0
+    var restTime: Int = 0
+    var countdown: Int = 0
+    
+    var workoutTimer = Timer()
+    var countdownTimer = Timer()
+    
+    let workout = Workout(totalTime: 60, workoutTime: 7, restTime: 3, countdown: 5)
+    
+    
+    //MARK: - ViewController
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        training.title = "7 Seconds Hang"
-        training.totalTime = 60
-        training.restTime = 3
-        training.workoutTime = 7
-        
+        initWorkout()
         initWorkoutScreen()
     }
+    
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
     
-    //MARK: IBAction
+    
+    //MARK: - IBActions
 
     @IBAction func startWorkout(_ sender: UIButton) {
         prepareCountdownScreen()
@@ -49,33 +53,89 @@ class ViewController: UIViewController {
         countdownTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateCountdown), userInfo: nil, repeats: true)
     }
     
+    
     @IBAction func cancelWorkout(_ sender: UIButton) {
-        timer.invalidate()
+        workoutTimer.invalidate()
         resetWorkout()
         updateTimerLabels()
     }
     
-    //MARK: Methods
     
-    private func initWorkoutScreen() {
-        workoutTitle.text = training.title
+    //MARK: Start New Workout
+    
+    func initWorkoutScreen() {
+        workoutTitleLabel.text = "Seven Seconds Hang"
         workoutTimeLabel.isHidden = false
         startButton.isHidden = false
         resetButton.isHidden = true
-        buttonLabel.isHidden = false
-        buttonLabel.text = "Start"
         
         updateTimerLabels()
     }
     
-    private func prepareCountdownScreen() {
+    
+    func prepareCountdownScreen() {
         workoutTimeLabel.isHidden = true
         startButton.isHidden = true
         resetButton.isHidden = true
-        buttonLabel.isHidden = true
         countDownLabel.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         countDownLabel.text = "\(countdown)"
     }
+    
+    func initWorkout() {
+        workoutTime = workout.workoutTime
+        totalTime = workout.totalTime
+        restTime = workout.restTime
+        countdown = workout.countdown
+    }
+
+    
+    func startWorkoutTimer() {
+        workoutTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: true)
+    }
+    
+    
+    //MARK: - Reset Workout
+    
+    func enableResetButton() {
+        startButton.isHidden = true
+        resetButton.isHidden = false
+    }
+    
+    
+    func resetWorkout() {
+        workoutTimer.invalidate()
+        
+        initWorkout()
+        initWorkoutScreen()
+    }
+    
+    
+    //MARK: - Update Methods
+    
+    @objc func updateTimer() {
+        if totalTime > 0 {
+            totalTime -= 1
+            
+            if workoutTime == 0 {
+                restTime -= 1
+                
+                if restTime == 0 {
+                    workoutTime = workout.workoutTime
+                    restTime = workout.restTime
+                } else {
+                    updateTimerLabels()
+                }
+            } else {
+                workoutTime -= 1
+                updateTimerLabels()
+            }
+        } else {
+            showCompletionAlert()
+            workoutTimer.invalidate()
+        }
+        updateTimerLabels()
+    }
+    
     
     @objc func updateCountdown() {
         if countdown > 1 {
@@ -89,41 +149,23 @@ class ViewController: UIViewController {
         }
     }
     
-    private func enableResetButton() {
-        startButton.isHidden = true
-        resetButton.isHidden = false
-        buttonLabel.text = "Reset"
-    }
     
-    private func startWorkoutTimer() {
-        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: true)
-    }
-    
-    @objc func updateTimer() {
-        if training.totalTime > 0 {
-            training.totalTime -= 1
-            
-            if training.workoutTime == 0 {
-                training.restTime -= 1
-                
-                if training.restTime == 0 {
-                    training.workoutTime = 7
-                    training.restTime = 3
-                } else {
-                    updateTimerLabels()
-                }
-            } else {
-                training.workoutTime -= 1
-                updateTimerLabels()
-            }
+    func updateTimerLabels() {
+        workoutTimeLabel.text = "\(timeString(time: TimeInterval(totalTime)))"
+        
+        if workoutTime == 0 {
+            countDownLabel.textColor = #colorLiteral(red: 0.6392156863, green: 0.8705882353, blue: 0.5137254902, alpha: 1)
+            countDownLabel.text = "\(restTime)"
         } else {
-            timer.invalidate()
-            showCompletionAlert()
+            countDownLabel.textColor = #colorLiteral(red: 0.9803921569, green: 0.2745098039, blue: 0.3490196078, alpha: 1)
+            countDownLabel.text = "\(workoutTime)"
         }
-        updateTimerLabels()
     }
     
-    private func showCompletionAlert() {
+    
+    //MARK: - Alerts
+    
+    func showCompletionAlert() {
         let alertController = UIAlertController(title: "WOW you did it!", message: "💪🏼", preferredStyle: .alert)
         let alertAction = UIAlertAction(title: "Thanks!", style: .default) { (UIAlertAction) in
             self.resetWorkout()
@@ -133,28 +175,8 @@ class ViewController: UIViewController {
         self.present(alertController, animated: true)
     }
     
-    private func resetWorkout() {
-        timer.invalidate()
-        
-        training.totalTime = 60
-        training.workoutTime = 7
-        training.restTime = 3
-        countdown = 3
-        
-        initWorkoutScreen()
-    }
     
-    func updateTimerLabels() {
-        workoutTimeLabel.text = "\(timeString(time: TimeInterval(training.totalTime)))"
-        
-        if training.workoutTime == 0 {
-            countDownLabel.textColor = #colorLiteral(red: 0.6392156863, green: 0.8705882353, blue: 0.5137254902, alpha: 1)
-            countDownLabel.text = "\(training.restTime)"
-        } else {
-            countDownLabel.textColor = #colorLiteral(red: 0.9803921569, green: 0.2745098039, blue: 0.3490196078, alpha: 1)
-            countDownLabel.text = "\(training.workoutTime)"
-        }
-    }
+    //MARK: - Helper Functions
     
     func timeString(time: TimeInterval) -> String {
         

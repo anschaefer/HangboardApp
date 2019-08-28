@@ -9,9 +9,8 @@
 import Foundation
 
 struct Workout {
-    var title: String = "Some title"
-    var totalTime: Int = 0
-    var workoutTime: Int = 0
-    var restTime: Int = 0
-    
+    let totalTime: Int
+    let workoutTime: Int
+    let restTime: Int
+    let countdown: Int
 }
