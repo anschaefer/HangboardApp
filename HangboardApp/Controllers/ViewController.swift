@@ -11,9 +11,8 @@ import UIKit
 class ViewController: UIViewController {
 
     //MARK: - IBOutlets
-    @IBOutlet weak var workoutTitleLabel: UILabel!
-    @IBOutlet weak var workoutTimeLabel: UILabel!
-    @IBOutlet weak var countDownLabel: UILabel!
+    @IBOutlet weak var totalTimeLabel: UILabel!
+    @IBOutlet weak var timerLabel: UILabel!
     @IBOutlet weak var startButton: UIButton!
     @IBOutlet weak var resetButton: UIButton!
     
@@ -23,7 +22,6 @@ class ViewController: UIViewController {
     var totalTime: Int = 0
     var restTime: Int = 0
     var countdown: Int = 0
-    
     var workoutTimer = Timer()
     var countdownTimer = Timer()
     
@@ -39,7 +37,6 @@ class ViewController: UIViewController {
         initWorkoutScreen()
     }
     
-    
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .default
     }
@@ -48,11 +45,9 @@ class ViewController: UIViewController {
     //MARK: - IBActions
 
     @IBAction func startWorkout(_ sender: UIButton) {
-        prepareCountdownScreen()
-        
+        initCountdownScreen()
         countdownTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateCountdown), userInfo: nil, repeats: true)
     }
-    
     
     @IBAction func cancelWorkout(_ sender: UIButton) {
         workoutTimer.invalidate()
@@ -63,22 +58,12 @@ class ViewController: UIViewController {
     
     //MARK: Start New Workout
     
-    func initWorkoutScreen() {
-        workoutTitleLabel.text = "Seven Seconds Hang"
-        workoutTimeLabel.isHidden = false
-        startButton.isHidden = false
-        resetButton.isHidden = true
-        
-        updateTimerLabels()
-    }
-    
-    
-    func prepareCountdownScreen() {
-        workoutTimeLabel.isHidden = true
+    func initCountdownScreen() {
+        totalTimeLabel.isHidden = true
         startButton.isHidden = true
         resetButton.isHidden = true
-        countDownLabel.textColor = #colorLiteral(red: 0.9490196078, green: 0.9647058824, blue: 0.9607843137, alpha: 1)
-        countDownLabel.text = "\(countdown)"
+        timerLabel.textColor = #colorLiteral(red: 0.9490196078, green: 0.9647058824, blue: 0.9607843137, alpha: 1)
+        timerLabel.text = "\(countdown)"
     }
     
     func initWorkout() {
@@ -87,8 +72,15 @@ class ViewController: UIViewController {
         restTime = workout.restTime
         countdown = workout.countdown
     }
-
     
+    func initWorkoutScreen() {
+        totalTimeLabel.isHidden = false
+        startButton.isHidden = false
+        resetButton.isHidden = true
+        
+        updateTimerLabels()
+    }
+
     func startWorkoutTimer() {
         workoutTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: true)
     }
@@ -101,10 +93,8 @@ class ViewController: UIViewController {
         resetButton.isHidden = false
     }
     
-    
     func resetWorkout() {
         workoutTimer.invalidate()
-        
         initWorkout()
         initWorkoutScreen()
     }
@@ -118,16 +108,13 @@ class ViewController: UIViewController {
             
             if workoutTime == 0 {
                 restTime -= 1
-                
-                if restTime == 0 {
-                    workoutTime = workout.workoutTime
-                    restTime = workout.restTime
-                } else {
-                    updateTimerLabels()
-                }
             } else {
                 workoutTime -= 1
-                updateTimerLabels()
+            }
+            
+            if restTime == 0 && totalTime != 0 {
+                workoutTime = workout.workoutTime
+                restTime = workout.restTime
             }
         } else {
             showCompletionAlert()
@@ -136,29 +123,28 @@ class ViewController: UIViewController {
         updateTimerLabels()
     }
     
+    func updateTimerLabels() {
+        totalTimeLabel.text = "\(timeString(time: TimeInterval(totalTime)))"
+        
+        if workoutTime == 0 {
+            timerLabel.textColor = #colorLiteral(red: 0.959071219, green: 0.9716239572, blue: 0.968834579, alpha: 1)
+            timerLabel.text = "\(restTime)"
+        } else {
+            timerLabel.textColor = #colorLiteral(red: 0.6396055222, green: 0.7585726976, blue: 0.7542446852, alpha: 1)
+            timerLabel.text = "\(workoutTime)"
+        }
+    }
     
     @objc func updateCountdown() {
         if countdown > 1 {
             countdown -= 1
-            countDownLabel.text = "\(countdown)"
+            timerLabel.text = "\(countdown)"
         } else {
             countdownTimer.invalidate()
-            resetWorkout()
+            initWorkout()
+            initWorkoutScreen()
             startWorkoutTimer()
             enableResetButton()
-        }
-    }
-    
-    
-    func updateTimerLabels() {
-        workoutTimeLabel.text = "\(timeString(time: TimeInterval(totalTime)))"
-        
-        if workoutTime == 0 {
-            countDownLabel.textColor = #colorLiteral(red: 0.959071219, green: 0.9716239572, blue: 0.968834579, alpha: 1)
-            countDownLabel.text = "\(restTime)"
-        } else {
-            countDownLabel.textColor = #colorLiteral(red: 0.6396055222, green: 0.7585726976, blue: 0.7542446852, alpha: 1)
-            countDownLabel.text = "\(workoutTime)"
         }
     }
     
@@ -166,8 +152,8 @@ class ViewController: UIViewController {
     //MARK: - Alerts
     
     func showCompletionAlert() {
-        let alertController = UIAlertController(title: "WOW you did it!", message: "💪🏼", preferredStyle: .alert)
-        let alertAction = UIAlertAction(title: "Thanks!", style: .default) { (UIAlertAction) in
+        let alertController = UIAlertController(title: "You did it!", message: "💪🏼", preferredStyle: .alert)
+        let alertAction = UIAlertAction(title: "Done", style: .default) { (UIAlertAction) in
             self.resetWorkout()
         }
         
@@ -179,7 +165,6 @@ class ViewController: UIViewController {
     //MARK: - Helper Functions
     
     func timeString(time: TimeInterval) -> String {
-        
         let hours = Int(time) / 3600
         let minutes = Int(time) / 60 % 60
         let seconds = Int(time) % 60

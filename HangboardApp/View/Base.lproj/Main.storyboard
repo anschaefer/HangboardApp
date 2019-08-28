@@ -21,7 +21,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="c1d-QC-E0r" userLabel="Header View">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="65"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="7seconds Hang" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eSY-E2-raD">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Seven Seconds Hang" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eSY-E2-raD">
                                         <rect key="frame" x="8" y="28" width="359" height="29"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="29" id="A8L-WC-BM5"/>
@@ -67,13 +67,13 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00:00" textAlignment="center" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sbf-ZT-bbD">
-                                        <rect key="frame" x="106" y="49" width="163" height="48"/>
-                                        <fontDescription key="fontDescription" type="system" weight="thin" pointSize="40"/>
+                                        <rect key="frame" x="132" y="65.5" width="111" height="31.5"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
                                         <color key="textColor" red="0.78431372549019607" green="0.85490196078431369" blue="0.82745098039215681" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
-                                <color key="backgroundColor" red="0.38823529411764707" green="0.4392156862745098" blue="0.49411764705882355" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstItem="tJf-vi-a28" firstAttribute="centerX" secondItem="2qi-ee-PPO" secondAttribute="centerX" id="9yC-9x-CiN"/>
                                     <constraint firstItem="goQ-su-bbq" firstAttribute="top" secondItem="tJf-vi-a28" secondAttribute="bottom" constant="64" id="Gbw-d4-pHr"/>
@@ -102,11 +102,10 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
-                        <outlet property="countDownLabel" destination="tJf-vi-a28" id="du2-NP-jF6"/>
                         <outlet property="resetButton" destination="2qi-ee-PPO" id="86B-HR-BCB"/>
                         <outlet property="startButton" destination="goQ-su-bbq" id="1t3-7I-xJz"/>
-                        <outlet property="workoutTimeLabel" destination="sbf-ZT-bbD" id="Noc-m5-YMK"/>
-                        <outlet property="workoutTitleLabel" destination="eSY-E2-raD" id="pjf-dH-pQV"/>
+                        <outlet property="timerLabel" destination="tJf-vi-a28" id="du2-NP-jF6"/>
+                        <outlet property="totalTimeLabel" destination="sbf-ZT-bbD" id="Noc-m5-YMK"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
