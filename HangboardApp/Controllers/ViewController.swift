@@ -41,7 +41,7 @@ class ViewController: UIViewController {
     
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
+        return .default
     }
     
     
@@ -77,7 +77,7 @@ class ViewController: UIViewController {
         workoutTimeLabel.isHidden = true
         startButton.isHidden = true
         resetButton.isHidden = true
-        countDownLabel.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+        countDownLabel.textColor = #colorLiteral(red: 0.9490196078, green: 0.9647058824, blue: 0.9607843137, alpha: 1)
         countDownLabel.text = "\(countdown)"
     }
     
@@ -154,10 +154,10 @@ class ViewController: UIViewController {
         workoutTimeLabel.text = "\(timeString(time: TimeInterval(totalTime)))"
         
         if workoutTime == 0 {
-            countDownLabel.textColor = #colorLiteral(red: 0.6392156863, green: 0.8705882353, blue: 0.5137254902, alpha: 1)
+            countDownLabel.textColor = #colorLiteral(red: 0.959071219, green: 0.9716239572, blue: 0.968834579, alpha: 1)
             countDownLabel.text = "\(restTime)"
         } else {
-            countDownLabel.textColor = #colorLiteral(red: 0.9803921569, green: 0.2745098039, blue: 0.3490196078, alpha: 1)
+            countDownLabel.textColor = #colorLiteral(red: 0.6396055222, green: 0.7585726976, blue: 0.7542446852, alpha: 1)
             countDownLabel.text = "\(workoutTime)"
         }
     }
